@@ -1,131 +1,253 @@
 # Quizly — Mini Online Test App (MERN)
 
-A responsive online multiple-choice test app built with **MongoDB, Express, React and Node.js**. Students can register/login, take a 10-question test with a 10-minute countdown, submit answers, review correct/incorrect answers, and see their past attempts. An optional admin area lets an admin add questions.
+Quizly is a responsive online multiple-choice test application built using MongoDB, Express.js, React.js, and Node.js. Students can register, log in, attempt online tests, view their results, and track their previous attempts.
+
+## Live Demo
+
+- **Frontend:** https://quizly-mini-online-test-app-1.onrender.com
+- **Backend API:** https://quizly-mini-online-test-app.onrender.com
 
 ## Features
 
-- Student signup and login; passwords hashed with bcrypt; JWT-protected API routes.
-- Ten questions randomly selected from MongoDB for each attempt (seed includes 12 general knowledge questions).
-- 10-minute countdown; answers are saved to the server as they are selected; timer submits automatically.
-- Server-side score calculation and answer review. Correct answers are not sent to the student before submission.
-- Attempt history with score and submission date.
-- Admin-only question creation page.
-- Responsive React UI.
+- Student signup and login.
+- Secure password hashing using bcrypt.
+- JWT-based authentication.
+- 10 randomly selected MCQs for each test.
+- 10-minute countdown timer.
+- Automatic test submission when time expires.
+- Answers saved on the server.
+- Server-side score calculation.
+- Correct and incorrect answer review.
+- Previous test attempt history.
+- Admin login and question management.
+- Responsive user interface.
 
-## Tech stack
+## Tech Stack
 
-- Frontend: React 18, Vite, CSS
-- Backend: Node.js, Express, Mongoose
-- Database: MongoDB / MongoDB Atlas
-- Authentication: bcryptjs + JSON Web Token
+**Frontend**
+- React.js
+- Vite
+- CSS
 
-## Run locally
+**Backend**
+- Node.js
+- Express.js
+- Mongoose
 
-### Requirements
+**Database**
+- MongoDB
+- MongoDB Atlas
 
-- Node.js 18+ (Node 20 LTS recommended)
-- MongoDB running locally, or a MongoDB Atlas connection string
+**Authentication**
+- bcryptjs
+- JSON Web Token (JWT)
 
-### 1. Backend
+**Deployment**
+- Render Static Site (Frontend)
+- Render Web Service (Backend)
+
+## Project Structure
+
+```text
+quizly-mini-online-test-app/
+│
+├── backend/
+│   ├── config/
+│   ├── controllers/
+│   ├── middleware/
+│   ├── models/
+│   ├── routes/
+│   ├── scripts/
+│   ├── .env.example
+│   ├── package.json
+│   └── server.js
+│
+├── frontend/
+│   ├── src/
+│   ├── public/
+│   ├── .env.example
+│   ├── package.json
+│   └── index.html
+│
+├── .gitignore
+└── README.md
+```
+
+## Installation and Local Setup
+
+### Prerequisites
+
+- Node.js 18 or above
+- MongoDB local installation or MongoDB Atlas account
+- Git
+
+### 1. Clone Repository
+
+```bash
+git clone https://github.com/Dheerajpw/quizly-mini-online-test-app.git
+
+cd quizly-mini-online-test-app
+```
+
+### 2. Backend Setup
 
 ```bash
 cd backend
 npm install
 ```
 
-Copy `.env.example` to `.env` and update values:
+Create a `.env` file inside the backend folder.
 
 ```env
 PORT=5000
-MONGO_URI=mongodb://127.0.0.1:27017/mini_online_test
-JWT_SECRET=use_a_long_random_secret_here
+MONGO_URI=your_mongodb_connection_string
+JWT_SECRET=long_random_secret
 CLIENT_URL=http://localhost:5173
-ADMIN_EMAIL=admin@example.com
-ADMIN_PASSWORD=Admin123!
+ADMIN_EMAIL=admin_email
+ADMIN_PASSWORD=admin_password
 ```
 
-Seed the question bank (run once, or whenever you want to reset the sample questions):
+Seed sample questions:
 
-```bash
+bash
 npm run seed
-```
 
-Start the API:
 
-```bash
+Start backend:
+
+bash
 npm run dev
-```
 
-API health check: `http://localhost:5000/api/health`
 
-### 2. Frontend
+Backend runs at:
 
-Open a second terminal:
+text
+http://localhost:5000
 
-```bash
+
+### 3. Frontend Setup
+
+Open another terminal:
+
+bash
 cd frontend
 npm install
-```
 
-Copy `frontend/.env.example` to `frontend/.env`:
 
-```env
+Create a `.env` file inside the frontend folder:
+
+env
 VITE_API_URL=http://localhost:5000/api
-```
 
-Start the React app:
+Start frontend:
 
-```bash
+bash
 npm run dev
-```
 
-Open the Vite URL shown in your terminal (normally `http://localhost:5173`). Create a student account to begin.
 
-## Admin access
+Frontend normally runs at:
 
-The backend creates an admin account on startup if `ADMIN_EMAIL` and `ADMIN_PASSWORD` are set and that email does not already exist. Log in using those credentials; the Admin menu will appear. Change the sample password before deploying. Admin can add questions with four options and a correct option index (A = 0, B = 1, C = 2, D = 3).
+text
+http://localhost:5173
 
-## API overview
+
+## API Endpoints
 
 | Method | Endpoint | Description |
 |---|---|---|
 | POST | `/api/auth/signup` | Register student |
 | POST | `/api/auth/login` | Login |
-| GET | `/api/auth/me` | Current authenticated user |
-| POST | `/api/tests/start` | Start/resume a 10-question attempt |
-| PUT | `/api/tests/:id/answer` | Save an answer before deadline |
-| GET | `/api/tests/:id` | Get attempt or submitted result |
-| POST | `/api/tests/:id/submit` | Submit and calculate score |
-| GET | `/api/tests/history/list` | Student's submitted attempts |
-| POST | `/api/admin/questions` | Add question (admin only) |
-| GET | `/api/admin/questions` | List question bank (admin only) |
+| GET | `/api/auth/me` | Get current user |
+| POST | `/api/tests/start` | Start or resume test |
+| PUT | `/api/tests/:id/answer` | Save selected answer |
+| GET | `/api/tests/:id` | Get test or result |
+| POST | `/api/tests/:id/submit` | Submit test |
+| GET | `/api/tests/history/list` | View attempt history |
+| POST | `/api/admin/questions` | Add question |
+| GET | `/api/admin/questions` | View question bank |
 
-All protected endpoints require `Authorization: Bearer <token>`.
+Protected routes require:
 
-## Deployment (Render + Vercel)
+```text
+Authorization: Bearer <token>
+```
 
-### Backend on Render
+## Deployment on Render
 
-1. Push this repository to GitHub.
-2. In Render, create a **Web Service** from the repository and set the root directory to `backend`.
-3. Build command: `npm install`
-4. Start command: `npm start`
-5. Add environment variables: `MONGO_URI` (MongoDB Atlas URI), `JWT_SECRET` (long random secret), `CLIENT_URL` (your deployed frontend URL), `ADMIN_EMAIL`, and a strong `ADMIN_PASSWORD`. Render provides `PORT` automatically.
-6. After deployment, open `https://YOUR-API.onrender.com/api/health`.
-7. Seed the database from a local terminal using the same Atlas URI: in `backend/.env`, set `MONGO_URI` to Atlas and run `npm run seed`.
+Both frontend and backend are deployed on Render.
 
-### Frontend on Vercel
+### Backend Deployment
 
-1. Import the GitHub repository into Vercel.
-2. Set the root directory to `frontend` and framework preset to Vite.
-3. Add environment variable `VITE_API_URL=https://YOUR-API.onrender.com/api`.
-4. Deploy. Set the backend `CLIENT_URL` to the exact deployed frontend origin and redeploy the backend.
+1. Connect the GitHub repository to Render.
+2. Create a new **Web Service**.
+3. Set Root Directory to `backend`.
+4. Build Command:
 
-You can also host the frontend on Netlify or Render Static Sites. Configure the same `VITE_API_URL` value.
+```bash
+npm install
+```
 
-## Notes
+5. Start Command:
 
-- Do not commit `.env` files or real secrets.
-- Use a strong, unique admin password and JWT secret in production.
-- MongoDB Atlas must allow network access from your deployed backend (prefer restricted IP/network rules where possible).
-- The server's deadline is authoritative; the browser timer is for user experience. Student answers are saved to the API during the test.
+```bash
+npm start
+```
+
+6. Configure environment variables:
+
+```env
+MONGO_URI=your_mongodb_atlas_uri
+JWT_SECRET=your_strong_random_secret
+CLIENT_URL=your_render_frontend_url
+ADMIN_EMAIL=your_admin_email
+ADMIN_PASSWORD=your_strong_admin_password
+```
+
+Render automatically provides the `PORT` environment variable.
+
+### Frontend Deployment
+
+1. Create a new **Static Site** on Render.
+2. Connect the same GitHub repository.
+3. Set Root Directory to `frontend`.
+4. Build Command:
+
+```bash
+npm install && npm run build
+```
+
+5. Publish Directory:
+
+```text
+dist
+```
+
+6. Add the environment variable:
+
+```env
+VITE_API_URL=https://quizly-mini-online-test-app.onrender.com/api
+```
+
+7. Deploy the frontend.
+8. Update the backend's `CLIENT_URL` with the deployed frontend URL.
+
+## Admin Access
+
+The backend creates an admin account during startup if the configured admin email does not already exist.
+
+Admin users can add new questions with four options and select the correct answer.
+
+## Security Notes
+
+- Never commit `.env` files.
+- Never expose database credentials or JWT secrets.
+- Use strong and unique passwords.
+- MongoDB Atlas must allow connections from the deployed backend.
+- Passwords are hashed before storing them.
+- The server calculates the final test score.
+
+## Author
+
+**Dheeraj Kumar**
+
+- GitHub: https://github.com/Dheerajpw
