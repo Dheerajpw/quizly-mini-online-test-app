@@ -100,8 +100,8 @@ Create a `.env` file inside the backend folder.
 
 ```env
 PORT=5000
-MONGO_URI=your_mongodb_connection_string
-JWT_SECRET=long_random_secret
+MONGO_URI=mongodb_connection_string
+JWT_SECRET=random_secret
 CLIENT_URL=http://localhost:5173
 ADMIN_EMAIL=admin_email
 ADMIN_PASSWORD=admin_password
